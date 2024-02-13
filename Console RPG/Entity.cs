@@ -28,6 +28,9 @@ namespace Console_RPG
         public String race;
         public int currentHP, maxHP;
         public int currentMana, maxMana;
+        public int damageTaken;
+        public bool isMounted;
+        public Mount mount;
         //This is called composition
         public Stats stats;
         public Entity(string name, string race, int hp, int mana, Stats stats)
@@ -39,6 +42,8 @@ namespace Console_RPG
             currentMana = mana;
             maxMana = mana;
             this.stats = stats;
+            damageTaken = 0;
+            isMounted = false;
 
         }
 
@@ -46,6 +51,11 @@ namespace Console_RPG
 
         public abstract void Attack(Entity target);
 
+        public abstract void GetStats();
 
+        public void UseItem(Item item, Entity target)
+        {
+            item.Use(this, target);
+        }
     }
 }

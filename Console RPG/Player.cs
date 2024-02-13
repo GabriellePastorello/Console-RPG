@@ -6,24 +6,35 @@ namespace Console_RPG
     class Player : Entity
     {
         public int xp, level;
-        public bool isMounted;
 
         public Player (string name, string race, int hp, int mana, Stats stats) : base(name, race, hp, mana, stats)
         {
             xp = 0;
             level = 1;
-            isMounted = false;
         }
 
         public override Entity ChooseTarget(List<Entity> targets)
         {
-            Random random = new Random();
-            return targets[random.Next(targets.Count)];
+            String theTarget;
+            Console.WriteLine("Choose a target");
+            foreach (Entity i in targets)
+            {
+                Console.WriteLine(i.name);
+            }
+            theTarget = Console.ReadLine();
+            foreach (Entity i in targets)
+            {
+                if (i.name == theTarget)
+                {
+                    return i;
+                }
+            }
+            Console.WriteLine("Invalid Target. Try again.");
+            return ChooseTarget(targets);
         }
 
         public override void Attack(Entity target)
         {
-            //finish this
             Random random = new Random();
             int damage = (stats.strength + random.Next(stats.strength)) - target.stats.defence;
             int dodgeChance = target.stats.speed;
@@ -33,7 +44,7 @@ namespace Console_RPG
             }
             else if (random.Next(40) <= dodgeChance)
             {
-                Console.WriteLine(target.name + " dodged the attack!");
+                Console.WriteLine(target.name + " dodged " + name + "'s attack!");
             }
             else
             {
@@ -84,6 +95,11 @@ namespace Console_RPG
                     LevelUp();
                 }
             }
+        }
+
+        public override void GetStats()
+        {
+            Console.WriteLine("Name: " + name + "\nRace: " + race + "\nHP: " + currentHP + "/" + maxHP);
         }
     }
 }

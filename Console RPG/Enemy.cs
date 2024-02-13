@@ -22,8 +22,30 @@ namespace Console_RPG
 
         public override void Attack(Entity target)
         {
-            //finish
-            Console.WriteLine("Enemy attacked target");
+            Random random = new Random();
+            int damage = (stats.strength + random.Next(stats.strength)) - target.stats.defence;
+            int dodgeChance = target.stats.speed;
+            if (damage <= 0)
+            {
+                Console.WriteLine(target.name + " blocked the attack!");
+                target.damageTaken = 0;
+            }
+            else if (random.Next(40) <= dodgeChance)
+            {
+                Console.WriteLine(target.name + " dodged " + "'s attack!");
+                target.damageTaken = 0;
+            }
+            else
+            {
+                Console.WriteLine(name + " attacked " + target.name + " for " + damage + " damage!");
+                target.currentHP -= damage;
+                target.damageTaken = damage;
+            }
+        }
+
+        public override void GetStats()
+        {
+            throw new NotImplementedException();
         }
     }
 }
