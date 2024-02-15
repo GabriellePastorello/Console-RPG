@@ -24,7 +24,33 @@ namespace Console_RPG
 
             Weapon sword = new Weapon(10, 15.0f, "sword", "a normal sword", 10, 80);
 
-            player.UseItem(sword, bandit);
+            Location startingTown = new Location("Hometown", "A small town, where you will start your journey.");
+            Location banditPass = new Location("Bandit Pass", "A path used by bandits that connects to two towns.");
+            Location banditCamp = new Location("Bandit Camp", "A camp of bandits nestled between two towns.");
+            Location smallTown = new Location("Small Town", "It's a town near the mountain's foot. There's valuable goods to buy here.");
+            Location forestPath = new Location("Forest Path", "A path that leads to Cinder Mountain. It's an abandoned road that few dare to tread.");
+            Location northernForestPath = new Location("Northern Forest Path", "A road that is most often used by those who worship the dragons.");
+            Location cultistCamp = new Location("Cultist Camp", "The dragon cultists settled here, gaurding the mountains from 'trespassers'.");
+            Location mountainFoot = new Location("Mountain's Foot", "The foot of Cinder Mountain.");
+            Location mountainSide = new Location("Mountainside", "The side of Cinder Mountain, where few trees grow and dragons patrol from above.");
+            Location cliffs = new Location("Cliffs", "The cliffs of Cinder Mountain, few dragons bother here but the path is dangerous to travel.");                               
+            Location QilinsLake = new Location("Quilin's Lake", "A lake where it is fabled that the mythical Quilin lives.");
+            Location cave = new Location("Cave", "A cave in the face of the mountain. Probably a good place to rest.");
+            Location mountainPeak = new Location("Mountain Peak", "The top of Cinder Mountain. You can see the forest stretch out below you.");
+            Location EbonysCrevass = new Location("Ebony's Crevass", "A large crevass in the side of Cinder Mountain, the battlefield were many armies have fallen in an attempt to defeat the dragons.");
+
+            startingTown.SetNearbyLocations(east: forestPath, west: banditPass);
+            forestPath.SetNearbyLocations(north: northernForestPath);
+            northernForestPath.SetNearbyLocations(north: cultistCamp, west: QilinsLake);
+            cultistCamp.SetNearbyLocations(north: mountainFoot);
+            banditPass.SetNearbyLocations(north: banditCamp);
+            smallTown.SetNearbyLocations(east: mountainFoot, south: banditCamp);
+            mountainFoot.SetNearbyLocations(north: mountainSide, east: cliffs, west: smallTown);
+            mountainSide.SetNearbyLocations(north: EbonysCrevass);
+            cliffs.SetNearbyLocations(east: cave, north: mountainPeak);
+            mountainPeak.SetNearbyLocations(west: EbonysCrevass, south: cliffs);
+
+            startingTown.Resolve();
 
             
         }
