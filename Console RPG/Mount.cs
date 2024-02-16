@@ -7,7 +7,7 @@ namespace Console_RPG
     {
         public int curPassengers, maxPassengers;
 
-        public Mount(string name, string race, int hp, int mana, Stats stats, int passengers) : base(name, race, hp, mana, stats)
+        public Mount(string name, string race, int hp, int mana, float carryWeight, Stats stats, int passengers) : base(name, race, hp, mana, carryWeight, stats)
         {
             curPassengers = 0;
             maxPassengers = passengers;
@@ -42,9 +42,15 @@ namespace Console_RPG
             }
         }
 
-        public override void GetStats()
+        public override void getStatus()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Name: " + this.name);
+            Console.WriteLine("Race: " + this.race);
+            Console.WriteLine("Health: " + this.currentHP + "/" + this.maxHP);
+            Console.WriteLine("Mana: " + this.currentMana + "/" + this.maxMana);
+            Console.WriteLine("Remaining carry weight: " + this.carryWeight);
+            Console.WriteLine("Passengers: " + curPassengers + "/" + maxPassengers);
+            Console.WriteLine("Speed: " + this.stats.speed + " Strength: " + this.stats.strength + " Defence: " + this.stats.defence + " Intelligence: " + this.stats.intelligence);
         }
     }
 }

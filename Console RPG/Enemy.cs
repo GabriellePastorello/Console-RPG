@@ -6,11 +6,13 @@ namespace Console_RPG
     class Enemy : Entity
     {
         public int expSpoils;
+        public int goldSpoils;
         public int chaos;
 
-        public Enemy(string name, string race, int hp, int mana, Stats stats, int spoils, int chaos) : base(name, race, hp, mana, stats)
+        public Enemy(string name, string race, int hp, int mana, float carryWeight, Stats stats, int spoils, int goldSpoils, int chaos) : base(name, race, hp, mana, carryWeight, stats)
         {
             expSpoils = spoils;
+            this.goldSpoils = goldSpoils;
             this.chaos = chaos;
         }
 
@@ -43,9 +45,22 @@ namespace Console_RPG
             }
         }
 
-        public override void GetStats()
+        public override void getStatus()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Name: " + this.name);
+            Console.WriteLine("Race: " + this.race);
+            Console.WriteLine("Chaos: " + this.chaos);
+            Console.WriteLine("Health: " + this.currentHP + "/" + this.maxHP);
+            Console.WriteLine("Mana: " + this.currentMana + "/" + this.maxMana);
+            Console.WriteLine("Speed: " + this.stats.speed + " Strength: " + this.stats.strength + " Defence: " + this.stats.defence + " Intelligence: " + this.stats.intelligence);
+            if (isMounted)
+            {
+                Console.WriteLine("Mount: " + this.mount.name);
+            }
+            else
+            {
+                Console.WriteLine("Mount: none");
+            }
         }
     }
 }
