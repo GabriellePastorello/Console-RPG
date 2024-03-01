@@ -1,10 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Console_RPG
 {
     class Enemy : Entity
     {
+        public static Enemy Ebony = new Enemy("Ebony", "Dragon", 10000, 10000, 10, new Stats(15, 19, 20, 18), 1000, 10000, 1);
+        public static Enemy dragonScout = new Enemy("Brown Dragon Scout", "Dragon", 500, 500, 10, new Stats(18, 12, 18, 17), 100, 1000, 2);
+        public static Enemy dragonScout2 = new Enemy("Green Dragon Scout", "Dragon", 500, 500, 10, new Stats(18, 12, 18, 17), 100, 1000, 2);
+        public static Enemy dragonScout3 = new Enemy("Dragon Scout", "Dragon", 500, 500, 10, new Stats(18, 12, 18, 17), 100, 1000, 2);
+        public static Enemy Cultist = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist2 = new Enemy("Second Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist3 = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist4 = new Enemy("Second Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist5 = new Enemy("Third Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy CultistLeader = new Enemy("Dragon Cultist Leader", "Human", 90, 130, 10, new Stats(6, 5, 5, 7), 60, 200, 6);
+        public static Enemy Cultist6 = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist7 = new Enemy("Other Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Drake = new Enemy("Cult Drake", "Drake", 100, 150, 10, new Stats(10, 2, 10, 6), 100, 40, 5);
+        public static Enemy bandit = new Enemy("Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy bandit2 = new Enemy("Other Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy bandit3 = new Enemy("Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy bandit4 = new Enemy("Other Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy bandit5 = new Enemy("Other Other Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy banditLeader = new Enemy("Bandit Leader", "Human", 50, 15, 10, new Stats(7, 4, 9, 6), 30, 500, 4);
+        public static Enemy bear = new Enemy("Bear", "Bear", 80, 1, 10, new Stats(3, 2, 7, 1), 40, 10, 0);
+
         public int expSpoils;
         public int goldSpoils;
         public int chaos;
@@ -19,48 +42,160 @@ namespace Console_RPG
         public override Entity ChooseTarget(List<Entity> targets)
         {
             Random random = new Random();
-            return targets[random.Next(targets.Count)];
+            Entity target = targets[random.Next(targets.Count)];
+            if (target.currentHP > 0)
+            {
+                return target;
+            }
+            else
+            {
+                return ChooseTarget(targets);
+            }
         }
 
         public override void Attack(Entity target)
         {
+            Console.WriteLine("\n");
             Random random = new Random();
             int damage = (stats.strength + random.Next(stats.strength)) - target.stats.defence;
-            int dodgeChance = target.stats.speed;
+            int dodgeChance = target.stats.speed - this.stats.speed;
+            if (random.Next(20) <= chaos)
+            {
+                damage *= 2;
+                dodgeChance /= 2;
+            }
             if (damage <= 0)
             {
-                Console.WriteLine(target.name + " blocked the attack!");
-                target.damageTaken = 0;
+                Console.WriteLine(target.name + " blocked " + name + "'s attack!");
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
             }
             else if (random.Next(40) <= dodgeChance)
             {
-                Console.WriteLine(target.name + " dodged " + "'s attack!");
-                target.damageTaken = 0;
+                Console.WriteLine(target.name + " dodged " + name + "'s attack!");
             }
             else
             {
                 Console.WriteLine(name + " attacked " + target.name + " for " + damage + " damage!");
                 target.currentHP -= damage;
-                target.damageTaken = damage;
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
+                if (target.currentHP <= 0)
+                {
+                    Console.WriteLine(target.name + " has been defeated!");
+                }
             }
         }
 
-        public override void getStatus()
+        public override void Spell(Entity target)
         {
-            Console.WriteLine("Name: " + this.name);
-            Console.WriteLine("Race: " + this.race);
-            Console.WriteLine("Chaos: " + this.chaos);
-            Console.WriteLine("Health: " + this.currentHP + "/" + this.maxHP);
-            Console.WriteLine("Mana: " + this.currentMana + "/" + this.maxMana);
-            Console.WriteLine("Speed: " + this.stats.speed + " Strength: " + this.stats.strength + " Defence: " + this.stats.defence + " Intelligence: " + this.stats.intelligence);
-            if (isMounted)
+            Console.WriteLine("\n");
+            Random random = new Random();
+            int damage = (stats.intelligence + random.Next(stats.intelligence)) - target.stats.intelligence;
+            int dodgeChance = target.stats.speed - this.stats.speed;
+            currentMana -= stats.intelligence;
+            if (random.Next(20) <= chaos)
             {
-                Console.WriteLine("Mount: " + this.mount.name);
+                damage *= 2;
+                dodgeChance /= 2;
+            }
+            if (damage <= 0)
+            {
+                Console.WriteLine(target.name + " resisted " + name + "'s spell!");
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
+            }
+            else if (random.Next(40) <= dodgeChance)
+            {
+                Console.WriteLine(target.name + " dodged " + name + "'s spell!");
             }
             else
             {
-                Console.WriteLine("Mount: none");
+                Console.WriteLine(name + " attacked " + target.name + " with a spell for " + damage + " damage!");
+                target.maxHP -= damage;
+                if (target.currentHP > target.maxHP)
+                {
+                    target.currentHP = target.maxHP;
+                }
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
+                if (target.currentHP <= 0)
+                {
+                    Console.WriteLine(target.name + " has been defeated!");
+                    maxHP += damage;
+                }
             }
+        }
+
+        public override void DoTurn(List<Entity> allies, List<Enemy> enemies)
+        {
+            Random random = new Random();
+            int choice = random.Next(5);
+            if (choice == 0)
+            {
+                Attack(ChooseTarget(allies));
+            }
+            else if (choice == 1)
+            {
+                if (currentMana >= stats.intelligence)
+                {
+                    Spell(ChooseTarget(allies));
+                }
+                else
+                {
+                    Console.WriteLine(name + " recovered 10 mana");
+                    currentMana += 10;
+                }
+            }
+            else if (choice == 2)
+            {
+                Console.WriteLine(name + " recovered " + chaos + " HP");
+                currentHP += stats.intelligence;
+                if (currentHP > maxHP)
+                {
+                    maxHP += 1;
+                    currentHP = maxHP;
+                }
+            }
+            else
+            {
+                if (stats.strength > stats.intelligence)
+                {
+                    Attack(ChooseTarget(allies));
+                }
+                else
+                {
+                    if (currentMana >= stats.intelligence)
+                    {
+                        Spell(ChooseTarget(allies));
+                    }
+                    else
+                    {
+                        Console.WriteLine(name + " recovered 10 mana");
+                        currentMana += 10;
+                    }
+                }
+            }
+            //players.Cast<Entity>().ToList();
+            choice = random.Next(25);
+            if (choice <= chaos)
+            {
+                Console.WriteLine(name + " took another turn...");
+                DoTurn(allies, enemies);
+            }
+        }
+
+        public override void gainXP(int xp)
+        {
+            
         }
     }
 }

@@ -1,18 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Console_RPG
 {
     class Player : Entity
     {
+        public static Player player = new Player("You", "Human", 80, 100, 100, new Stats(5, 5, 5, 5));
+        public static Player hiredBlade = new Player("Hired Blade", "Human", 75, 80, 100, new Stats(4, 5, 6, 4));
+        public static Player hiredBlade2 = new Player("Other Hired Blade", "Human", 75, 80, 100, new Stats(4, 5, 6, 4));
+        public static Player adventurer = new Player("Adventurer", "Human", 65, 90, 100, new Stats(6, 4, 3, 6));
+        public static Player warrior = new Player("Warrior", "Human", 100, 120, 120, new Stats(6, 6, 6, 6));
+
         public int xp, level;
-        public int gold;
+        public static int gold = 150;
+        public bool isMounted;
+        public Mount mount;
+        public bool isChaotic;
 
         public Player (string name, string race, int hp, int mana, float carryWeight, Stats stats) : base(name, race, hp, mana, carryWeight, stats)
         {
             xp = 0;
             level = 1;
-            gold = 150;
+            isMounted = false;
+            isChaotic = false;
+            if (name == "Adventurer")
+            {
+                isChaotic = true;
+            }
+        }
+
+        public void changeName(String name)
+        {
+            this.name = name;
         }
 
         public override Entity ChooseTarget(List<Entity> targets)
@@ -21,7 +41,10 @@ namespace Console_RPG
             Console.WriteLine("Choose a target");
             foreach (Entity i in targets)
             {
-                Console.WriteLine(i.name);
+                if (i.currentHP > 0)
+                {
+                    Console.WriteLine(i.name + " " + i.currentHP + "/" + i.maxHP);
+                }
             }
             theTarget = Console.ReadLine();
             foreach (Entity i in targets)
@@ -37,12 +60,23 @@ namespace Console_RPG
 
         public override void Attack(Entity target)
         {
+            Console.WriteLine("\n");
             Random random = new Random();
             int damage = (stats.strength + random.Next(stats.strength)) - target.stats.defence;
-            int dodgeChance = target.stats.speed;
+            int dodgeChance = target.stats.speed - this.stats.speed;
+            if (isChaotic && random.Next(15) <= 1)
+            {
+                damage *= 2;
+                dodgeChance /= 2;
+            }
+            
             if (damage <= 0)
             {
-                Console.WriteLine(target.name + " blocked the attack!");
+                Console.WriteLine(target.name + " blocked " + name + "'s attack!");
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
             }
             else if (random.Next(40) <= dodgeChance)
             {
@@ -52,6 +86,67 @@ namespace Console_RPG
             {
                 Console.WriteLine(name + " attacked " + target.name + " for " + damage + " damage!");
                 target.currentHP -= damage;
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
+            }
+            if (!(weapon is null))
+            {
+                UseItem(weapon, this);
+            }
+            if (target.currentHP <= 0)
+            {
+                Console.WriteLine(target.name + " has been defeated!");
+            }
+        }
+
+        public override void Spell(Entity target)
+        {
+            if ((currentMana < stats.intelligence))
+            {
+                Console.WriteLine("Not enough mana");
+                return;
+            }
+            Console.WriteLine("\n");
+            Random random = new Random();
+            int damage = (stats.intelligence + random.Next(stats.intelligence)) - target.stats.intelligence;
+            int dodgeChance = target.stats.speed - this.stats.speed;
+            if (isChaotic && random.Next(15) <= 1)
+            {
+                damage *= 2;
+                dodgeChance /= 2;
+            }
+            currentMana -= stats.intelligence;
+            if (damage <= 0)
+            {
+                Console.WriteLine(target.name + " resisted " + name + "' spell!");
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
+            }
+            else if (random.Next(40) <= dodgeChance)
+            {
+                Console.WriteLine(target.name + " dodged " + name + "'s spell!");
+            }
+            else
+            {
+                Console.WriteLine(name + " attacked " + target.name + " with a spell for " + damage + " damage!");
+                target.maxHP -= damage;
+                if (target.currentHP > target.maxHP)
+                {
+                    target.currentHP = target.maxHP;
+                }
+                if (!(target.armour is null))
+                {
+                    target.UseItem(target.armour, target);
+                }
+            }
+            if (target.currentHP <= 0)
+            {
+                Console.WriteLine(target.name + " has been defeated!");
+                maxHP += damage;
             }
         }
 
@@ -61,7 +156,7 @@ namespace Console_RPG
             {
                 xp -= level * 10;
                 level++;
-                Console.WriteLine("You leveled up to level " + level + "! Choose a stat to level up.\nHP | Mana | Speed | Strength | Defence | Intelligence");
+                Console.WriteLine(name + " leveled up to level " + level + "! Choose a stat to level up.\nHP " + maxHP + " --> " + (maxHP+10) + " | Mana " + maxMana + " --> " + (maxMana+10) + " | Speed " + stats.speed + " --> " + (stats.speed+1) + " | Strength " + stats.strength + " --> " + (stats.strength+1) + " | Defence " + stats.defence + " --> " + (stats.defence+1) + " | Intelligence " + stats.speed + "-- > " + (stats.speed+1));
                 String point = Console.ReadLine();
                 if (point == "HP")
                 {
@@ -96,28 +191,6 @@ namespace Console_RPG
                     xp += level * 10;
                     LevelUp();
                 }
-            }
-        }
-
-
-        public override void getStatus()
-        {
-            Console.WriteLine("\nName: " + this.name);
-            Console.WriteLine("Race: " + this.race);
-            Console.WriteLine("Level: " + this.level);
-            Console.WriteLine("XP: " + this.xp + "/" + this.level*10);
-            Console.WriteLine("Gold: " + this.gold);
-            Console.WriteLine("Health: " + this.currentHP + "/" + this.maxHP);
-            Console.WriteLine("Mana: " + this.currentMana + "/" + this.maxMana);
-            Console.WriteLine("Remaining carry weight: " + this.carryWeight);
-            Console.WriteLine("Speed: " + this.stats.speed + " Strength: " + this.stats.strength + " Defence: " + this.stats.defence + " Intelligence: " + this.stats.intelligence);
-            if (isMounted)
-            {
-                Console.WriteLine("Mount: " + this.mount.name);
-            }
-            else
-            {
-                Console.WriteLine("Mount: none");
             }
         }
 
@@ -198,8 +271,8 @@ namespace Console_RPG
             {
                 if (takeFrom.inventory[itemID].weight <= giveTo.carryWeight)
                 {
-                    giveTo.addToInventory(takeFrom.inventory[itemID]);
-                    takeFrom.removeFromInventory(takeFrom.inventory[itemID]);
+                    giveTo.inventory.Remove(takeFrom.inventory[itemID]);
+                    takeFrom.inventory.Remove(takeFrom.inventory[itemID]);
                 }
                 else
                 {
@@ -209,6 +282,83 @@ namespace Console_RPG
             else
             {
                 Console.WriteLine(itemName + " couldn't be found.");
+            }
+        }
+
+        public Item ChooseItem(List<Item> items)
+        {
+            String theTarget;
+            Console.WriteLine("Choose an item");
+            foreach (Item i in items)
+            {
+                Console.WriteLine(i.name);
+            }
+            theTarget = Console.ReadLine();
+            foreach (Item i in items)
+            {
+                if (i.name == theTarget)
+                {
+                    return i;
+                }
+            }
+            Console.WriteLine("Invalid Target. Try again.");
+            return ChooseItem(items);
+        }
+        public override void DoTurn(List<Entity> allies, List<Enemy> enemies)
+        {
+            if (!(mount is null))
+            {
+                if (mount.currentHP <= 0)
+                {
+                    dismountHorse();
+                }
+            }
+            Console.WriteLine("What would " + name + " like to do?\na.Use Item\nb.Attack\nc.Spell\nd.Skip");
+            String choice = Console.ReadLine();
+            if (choice == "a" && !(inventory is null) && inventory.Count > 0)
+            {
+                Item item = ChooseItem(inventory);
+                UseItem(item, this);
+                inventory.Remove(item);
+            }
+            else if (choice == "a")
+            {
+                Console.WriteLine("No items in inventory");
+                DoTurn(allies, enemies);
+            }
+            else if (choice == "b")
+            {
+            
+               Attack(ChooseTarget(enemies.Cast<Entity>().ToList()));
+            }
+            else if (choice == "c")
+            {
+                Spell(ChooseTarget(enemies.Cast<Entity>().ToList()));
+            }
+            else if (choice == "d")
+            {
+                Console.WriteLine(name + " skipped their turn.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid Input.");
+                DoTurn(allies, enemies);
+            }
+            Random random = new Random();
+            if (isChaotic && random.Next(15) <= 1)
+            {
+                Console.WriteLine(name + " takes another turn.");
+                DoTurn(allies, enemies);
+            }
+
+        }
+
+        public override void gainXP(int xp)
+        {
+            this.xp += xp;
+            while (this.xp >= level*10)
+            {
+                LevelUp();
             }
         }
     }

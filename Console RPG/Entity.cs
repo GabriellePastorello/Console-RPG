@@ -29,12 +29,11 @@ namespace Console_RPG
         public int currentHP, maxHP;
         public int currentMana, maxMana;
         public float carryWeight;
-        public int damageTaken;
-        public bool isMounted;
-        public Mount mount;
         //This is called composition
         public Stats stats;
         public List<Item> inventory;
+        public Armour armour;
+        public Weapon weapon;
         public Entity(string name, string race, int hp, int mana, float carryWeight, Stats stats)
         {
             this.name = name;
@@ -45,8 +44,7 @@ namespace Console_RPG
             maxMana = mana;
             this.carryWeight = carryWeight;
             this.stats = stats;
-            damageTaken = 0;
-            isMounted = false;
+            inventory = new List<Item> { HealthPotionItem.healthPotion, ManaPotionItem.manaPotion };
 
         }
 
@@ -54,43 +52,12 @@ namespace Console_RPG
 
         public abstract void Attack(Entity target);
 
-        public void addToInventory(Item item)
-        {
-            if (item.weight <= this.carryWeight)
-            {
-                if (inventory is null)
-                {
-                    inventory = new List<Item>{item};
-                    }
-                else
-                {
-                    
-                    inventory.Add(item);
-                    
-                }
-                this.carryWeight -= item.weight;
-                Console.WriteLine(item.name + " added to " + this.name + "'s inventory.");
-            }
-            else
-            {
-                Console.WriteLine(item.name + " couldn't be added to " + this.name + "'s inventory.");
-            }
-            
-        }
-
-        public void removeFromInventory(Item item)
-        {
-            carryWeight += item.weight;
-            inventory.Remove(item);
-            Console.WriteLine(item.name + " was removed from " + name + "'s inventory.");
-        }
+        public abstract void Spell(Entity target);
 
         public void UseItem(Item item, Entity target)
         {
             item.Use(this, target);
         }
-
-        public abstract void getStatus();
 
         public void getParty(List<Entity> allies)
         {
@@ -109,6 +76,56 @@ namespace Console_RPG
             {
                 Console.WriteLine(i.name);
             }
+            if (! (armour is null))
+            {
+                Console.WriteLine("Equiped armour: " + armour.name);
+            }
+            else
+            {
+                Console.WriteLine("Equiped armour: none");
+            }
         }
+
+        public void equipArmour(Armour armour)
+        {
+            if (this.armour is null)
+            {
+                this.armour = armour;
+                carryWeight -= armour.weight;
+                
+            }
+            else
+            {
+                carryWeight += this.armour.weight;
+                stats.defence -= this.armour.defence;
+                this.armour = armour;
+                carryWeight += armour.weight;
+            }
+            Console.WriteLine(name + " equiped " + armour.name);
+            stats.defence += armour.defence;
+        }
+
+        public void equipWeapon(Weapon weapon)
+        {
+            if (this.weapon is null)
+            {
+                this.weapon = weapon;
+                carryWeight -= weapon.weight;
+
+            }
+            else
+            {
+                carryWeight += this.weapon.weight;
+                stats.strength -= this.weapon.attackDamage;
+                this.weapon = weapon;
+                carryWeight += weapon.weight;
+            }
+            Console.WriteLine(name + " equiped " + weapon.name);
+            stats.strength += weapon.attackDamage;
+        }
+
+        public abstract void DoTurn(List<Entity> allies, List<Enemy> enemies);
+
+        public abstract void gainXP(int xp);
 }
 }

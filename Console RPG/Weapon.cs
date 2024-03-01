@@ -1,7 +1,11 @@
-﻿namespace Console_RPG
+﻿using System;
+
+namespace Console_RPG
 {
     class Weapon : Item
     {
+        public static Weapon sword = new Weapon(10, 10.0f, "sword", "a normal sword", 10, 80);
+
         public int attackDamage;
         public int curDurability, maxDurability;
 
@@ -15,9 +19,13 @@
         public override void Use(Entity user, Entity target)
         {
             curDurability -= user.stats.strength;
-            user.stats.strength += attackDamage;
-            user.Attack(target);
-            user.stats.strength -= attackDamage;
+            if (curDurability <= 0)
+            {
+                Console.WriteLine(name + " broke!");
+                user.stats.strength -= attackDamage;
+                user.stats.strength += 1;
+                attackDamage = 1;
+            }
         }
     }
 }

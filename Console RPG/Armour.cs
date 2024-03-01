@@ -1,7 +1,12 @@
-﻿namespace Console_RPG
+﻿using System;
+
+namespace Console_RPG
 {
     class Armour : Item
     {
+        public static Armour leather = new Armour(12, 15.4f, "Leather Armour", "Simple leather armour.", 5, 27);
+        public static Armour steel = new Armour(35, 40.5f, "Steel Armour", "This is heavy.", 25, 150);
+
         public int defence;
         public int curDurability, maxDurability;
 
@@ -14,7 +19,13 @@
 
         public override void Use(Entity user, Entity target)
         {
-            curDurability -= user.damageTaken;
+            curDurability -= 1;
+            if (curDurability <= 0)
+            {
+                Console.WriteLine(name + " broke!");
+                user.stats.defence -= this.defence;
+                defence = 0;
+            }
         }
     }
 }
