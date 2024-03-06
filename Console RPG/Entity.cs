@@ -48,6 +48,14 @@ namespace Console_RPG
             this.carryWeight = carryWeight;
             this.stats = stats;
             inventory = new List<Item> { HealthPotionItem.healthPotion, ManaPotionItem.manaPotion };
+            if (!(weapon is null))
+            {
+                weapon.equip(this);
+            }
+            if (!(armour is null))
+            {
+                armour.equip(this);
+            }
 
         }
 
@@ -77,54 +85,37 @@ namespace Console_RPG
             Console.WriteLine(this.name + "'s inventory:");
             foreach(Item i in inventory)
             {
-                Console.WriteLine(i.name);
+                Console.WriteLine(i.name + " - " + i.description);
             }
             if (! (armour is null))
             {
-                Console.WriteLine("Equiped armour: " + armour.name);
+                Console.WriteLine("Equiped armour: " + armour.name + " - " + armour.description);
+                Console.WriteLine("Durability: " + armour.curDurability + "/" + armour.maxDurability);
+                Console.WriteLine("Defence: " + armour.defence);
             }
             else
             {
                 Console.WriteLine("Equiped armour: none");
             }
-        }
-
-        public void equipArmour(Armour armour)
-        {
-            if (this.armour is null)
+            if (! (weapon is null))
             {
-                this.armour = armour;
-                carryWeight -= armour.weight;
-                
+                Console.WriteLine("Equiped weapon " + weapon.name + " - " + weapon.description);
+                Console.WriteLine("Durability: " + weapon.curDurability + "/" + weapon.maxDurability);
+                Console.WriteLine("Damage: " + weapon.attackDamage);
             }
             else
             {
-                carryWeight += this.armour.weight;
-                stats.defence -= this.armour.defence;
-                this.armour = armour;
-                carryWeight += armour.weight;
+                Console.WriteLine("Equiped weapon: none");
             }
-            Console.WriteLine(name + " equiped " + armour.name);
-            stats.defence += armour.defence;
         }
 
-        public void equipWeapon(Weapon weapon)
+        public void viewStats()
         {
-            if (this.weapon is null)
-            {
-                this.weapon = weapon;
-                carryWeight -= weapon.weight;
-
-            }
-            else
-            {
-                carryWeight += this.weapon.weight;
-                stats.strength -= this.weapon.attackDamage;
-                this.weapon = weapon;
-                carryWeight += weapon.weight;
-            }
-            Console.WriteLine(name + " equiped " + weapon.name);
-            stats.strength += weapon.attackDamage;
+            Console.WriteLine("\nName: " + name);
+            Console.WriteLine("Speed: " + stats.speed);
+            Console.WriteLine("Strength: " + stats.strength);
+            Console.WriteLine("Defence: " + stats.defence);
+            Console.WriteLine("Intelligence: " + stats.intelligence);
         }
 
         public abstract void DoTurn(List<Entity> allies, List<Enemy> enemies);

@@ -7,11 +7,11 @@ namespace Console_RPG
 {
     class Player : Entity
     {
-        public static Player player = new Player("You", "Human", 80, 100, 100, new Stats(5, 5, 5, 5));
-        public static Player hiredBlade = new Player("Hired Blade", "Human", 75, 80, 100, new Stats(4, 5, 6, 4));
-        public static Player hiredBlade2 = new Player("Other Hired Blade", "Human", 75, 80, 100, new Stats(4, 5, 6, 4));
-        public static Player adventurer = new Player("Adventurer", "Human", 65, 90, 100, new Stats(6, 4, 3, 6));
-        public static Player warrior = new Player("Warrior", "Human", 100, 120, 120, new Stats(6, 6, 6, 6));
+        public static Player player = new Player("You", "Human", 80, 100, 100, new Stats(5, 5, 5, 5), weapon: Weapon.sword3, armour: Armour.leather);
+        public static Player hiredBlade = new Player("Sellsword", "Human", 75, 80, 100, new Stats(4, 5, 6, 4), weapon: Weapon.sword, armour: Armour.leather2);
+        public static Player hiredBlade2 = new Player("Sell sword", "Human", 75, 80, 100, new Stats(4, 5, 6, 4), weapon: Weapon.sword2, armour: Armour.leather3);
+        public static Player adventurer = new Player("Adventurer", "Human", 65, 90, 100, new Stats(6, 4, 3, 6), weapon: Weapon.sword4, armour: Armour.adventureStuff);
+        public static Player warrior = new Player("Warrior", "Human", 100, 120, 120, new Stats(6, 6, 6, 6), weapon: Weapon.sword5, armour: Armour.steel);
 
         public int xp, level;
         public static int gold = 150;
@@ -66,7 +66,7 @@ namespace Console_RPG
         {
             Console.WriteLine("\n");
             Random random = new Random();
-            int damage = (stats.strength + random.Next(stats.strength)) - target.stats.defence;
+            int damage = (stats.strength + random.Next(stats.strength)) - (target.stats.defence);
             int dodgeChance = target.stats.speed - this.stats.speed;
             if (isChaotic && random.Next(15) <= 1)
             {

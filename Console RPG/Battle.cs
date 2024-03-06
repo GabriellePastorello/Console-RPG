@@ -6,20 +6,19 @@ using System.Threading;
 
 namespace Console_RPG
 {
-    class Battle
+    class Battle : Feature
     {
-        public bool isResolved;
+        
         public List<Enemy> enemies;
         public List<Entity> turnOrder;
 
 
-        public Battle(List<Enemy> enemies)
+        public Battle(List<Enemy> enemies) : base(false)
         {
             this.enemies = enemies;
-            isResolved = false;
         }
 
-        public void Resolve(List<Entity> allies)
+        public override void Resolve(List<Entity> allies)
         {
             Random rand = new Random();
             if (rand.Next(5) + allies.Count <= enemies.Count && !(enemies is null) && enemies[0].name != "Ebony")
@@ -92,6 +91,13 @@ namespace Console_RPG
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("\nAttackers Defeated!");
                     Console.ForegroundColor = ConsoleColor.Gray;
+                    for (int i = allies.Count - 1; i >= 0; i--)
+                    {
+                        if (allies[i].currentHP <= 0)
+                        {
+                            Entity.allies.Remove(allies[i]);
+                        }
+                    }
                     foreach (Enemy enemy in enemies)
                     {
                         foreach (Entity ally in allies)
@@ -105,6 +111,7 @@ namespace Console_RPG
                         Player.gold += enemy.goldSpoils;
                         Console.WriteLine("Party gained " + enemy.goldSpoils + " gold.");
                     }
+                    isResolved = true;
                     break;
                 }
             }
