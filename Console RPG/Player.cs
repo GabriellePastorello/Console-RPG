@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Console_RPG
 {
@@ -18,7 +19,7 @@ namespace Console_RPG
         public Mount mount;
         public bool isChaotic;
 
-        public Player (string name, string race, int hp, int mana, float carryWeight, Stats stats) : base(name, race, hp, mana, carryWeight, stats)
+        public Player(string name, string race, int hp, int mana, float carryWeight, Stats stats, Mount mount = null, Armour armour = null, Weapon weapon = null) : base(name, race, hp, mana, carryWeight, stats)
         {
             xp = 0;
             level = 1;
@@ -28,6 +29,9 @@ namespace Console_RPG
             {
                 isChaotic = true;
             }
+            this.mount = mount;
+            this.armour = armour;
+            this.weapon = weapon;
         }
 
         public void changeName(String name)
@@ -97,6 +101,7 @@ namespace Console_RPG
             }
             if (target.currentHP <= 0)
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(target.name + " has been defeated!");
             }
         }
@@ -145,6 +150,7 @@ namespace Console_RPG
             }
             if (target.currentHP <= 0)
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(target.name + " has been defeated!");
                 maxHP += damage;
             }
@@ -337,7 +343,19 @@ namespace Console_RPG
             }
             else if (choice == "d")
             {
-                Console.WriteLine(name + " skipped their turn.");
+                Console.WriteLine("\n" + name + " skipped their turn.");
+                currentHP += 2;
+                if (currentHP > maxHP)
+                {
+                    maxHP += 1;
+                    currentHP = maxHP;
+                }
+                currentMana += 2;
+                if (currentMana > maxMana)
+                {
+                    maxMana += 1;
+                    currentMana = maxMana;
+                }
             }
             else
             {
@@ -347,7 +365,9 @@ namespace Console_RPG
             Random random = new Random();
             if (isChaotic && random.Next(15) <= 1)
             {
-                Console.WriteLine(name + " takes another turn.");
+                Thread.Sleep(2000);
+                Console.WriteLine("\n" +name + " takes another turn.");
+                Thread.Sleep(2000);
                 DoTurn(allies, enemies);
             }
 

@@ -21,6 +21,11 @@ namespace Console_RPG
 
         public void Resolve(List<Entity> allies)
         {
+            Random rand = new Random();
+            if (rand.Next(5) + allies.Count <= enemies.Count && !(enemies is null) && enemies[0].name != "Ebony")
+            {
+                enemies.Remove(enemies[0]);
+            }
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nYou have been attacked!");
             Thread.Sleep(1000);
@@ -65,6 +70,14 @@ namespace Console_RPG
                             Console.WriteLine("\nIt is " + entity.name + "'s turn. " + entity.currentHP + "/" + entity.maxHP + " HP " + entity.currentMana + "/" + entity.maxMana + " Mana");
                         }
                         entity.DoTurn(allies, enemies);
+                        if (allies.TrueForAll(Entity => Entity.currentHP <= 0))
+                        {
+                            break;
+                        }
+                        if (enemies.TrueForAll(enemy => enemy.currentHP <= 0))
+                        {
+                            break;
+                        }
                     }
                     
                 }

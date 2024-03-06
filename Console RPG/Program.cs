@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Console_RPG
 {
@@ -7,14 +8,16 @@ namespace Console_RPG
     {
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Gray;
             // stats = speed, defence, strength, intelligence
             //entity = name, race, health, mana, stats
             Console.WriteLine("What is your name?");
+            Console.ForegroundColor = ConsoleColor.White;
             String input = Console.ReadLine();
             Player.player.changeName(input);
+            Console.ForegroundColor = ConsoleColor.Gray;
 
-            List<Entity> allies = new List<Entity> { Player.player, Mount.horse, Player.adventurer, Player.warrior };
-
+            
 
             
             Location.startingTown.SetNearbyLocations(east: Location.forestPath, west: Location.banditPass);
@@ -29,9 +32,15 @@ namespace Console_RPG
             Location.mountainPeak.SetNearbyLocations(west: Location.EbonysCrevass, south: Location.cliffs);
 
             Console.WriteLine("\nYour quest is to defeat the dragons of Cinder Mountain. For years they have been a threat to the people, stealing livestock and plundering villages. Now, with the rise of dragon worshippers, the people have been calling to defeat the dragons once and for all. Many nations have sent armies to defeat them, but none have succeeded. So you decide to go up the mountain yourself, hoping to take down their leader, Ebony. You start your adventure in your hometown, where you grew up under the constant threat of dragon attacks. You have planned a route to sneak onto the mountain, and today is the day you set of on your journey.");
-            Player.player.getParty(allies);
+            Thread.Sleep(5000);
+            Console.WriteLine("\nVillager: Hey, " + Player.player.name + ". Where are you going?");
+            Thread.Sleep(2000);
+            Console.WriteLine("\nVillager: Cinder Mountain you say? Surely you're not going alone!");
+            Thread.Sleep(2000);
+            Console.WriteLine("\nVillager: You should hire a sellsword at least. There's all sorts of dangers out there. Why don't you go to the shop, make sure you're prepared.");
+            Player.player.getParty();
             Player.player.mountHorse(Mount.horse);
-            Location.startingTown.Resolve(allies);
+            Location.startingTown.Resolve(Entity.allies);
 
             
         }

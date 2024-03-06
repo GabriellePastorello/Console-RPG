@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace Console_RPG
 {
@@ -12,31 +12,33 @@ namespace Console_RPG
         public static Enemy dragonScout2 = new Enemy("Green Dragon Scout", "Dragon", 500, 500, 10, new Stats(18, 12, 18, 17), 100, 1000, 2);
         public static Enemy dragonScout3 = new Enemy("Dragon Scout", "Dragon", 500, 500, 10, new Stats(18, 12, 18, 17), 100, 1000, 2);
         public static Enemy Cultist = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
-        public static Enemy Cultist2 = new Enemy("Second Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist2 = new Enemy("Devout Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
         public static Enemy Cultist3 = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
-        public static Enemy Cultist4 = new Enemy("Second Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
-        public static Enemy Cultist5 = new Enemy("Third Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist4 = new Enemy("Angry Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist5 = new Enemy("Tall Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
         public static Enemy CultistLeader = new Enemy("Dragon Cultist Leader", "Human", 90, 130, 10, new Stats(6, 5, 5, 7), 60, 200, 6);
         public static Enemy Cultist6 = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
-        public static Enemy Cultist7 = new Enemy("Other Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
+        public static Enemy Cultist7 = new Enemy("Scout Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5);
         public static Enemy Drake = new Enemy("Cult Drake", "Drake", 100, 150, 10, new Stats(10, 2, 10, 6), 100, 40, 5);
         public static Enemy bandit = new Enemy("Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
-        public static Enemy bandit2 = new Enemy("Other Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy bandit2 = new Enemy("Scout Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
         public static Enemy bandit3 = new Enemy("Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
-        public static Enemy bandit4 = new Enemy("Other Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
-        public static Enemy bandit5 = new Enemy("Other Other Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy bandit4 = new Enemy("Tiny Bandit", "Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
+        public static Enemy bandit5 = new Enemy("High Ranking Bandit","Human", 40, 10, 10, new Stats(6, 3, 8, 5), 25, 200, 3);
         public static Enemy banditLeader = new Enemy("Bandit Leader", "Human", 50, 15, 10, new Stats(7, 4, 9, 6), 30, 500, 4);
-        public static Enemy bear = new Enemy("Bear", "Bear", 80, 1, 10, new Stats(3, 2, 7, 1), 40, 10, 0);
+        public static Enemy bear = new Enemy("Bear", "Bear", 80, 1, 10, new Stats(3, 2, 7, 1), 40, 10, 1);
 
         public int expSpoils;
         public int goldSpoils;
         public int chaos;
 
-        public Enemy(string name, string race, int hp, int mana, float carryWeight, Stats stats, int spoils, int goldSpoils, int chaos) : base(name, race, hp, mana, carryWeight, stats)
+        public Enemy(string name, string race, int hp, int mana, float carryWeight, Stats stats, int spoils, int goldSpoils, int chaos, Armour armour = null, Weapon weapon = null) : base(name, race, hp, mana, carryWeight, stats)
         {
             expSpoils = spoils;
             this.goldSpoils = goldSpoils;
             this.chaos = chaos;
+            this.armour = armour;
+            this.weapon = weapon;
         }
 
         public override Entity ChooseTarget(List<Entity> targets)
@@ -86,6 +88,7 @@ namespace Console_RPG
                 }
                 if (target.currentHP <= 0)
                 {
+                    Console.ForegroundColor = ConsoleColor.Magenta; 
                     Console.WriteLine(target.name + " has been defeated!");
                 }
             }
@@ -129,6 +132,7 @@ namespace Console_RPG
                 }
                 if (target.currentHP <= 0)
                 {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine(target.name + " has been defeated!");
                     maxHP += damage;
                 }
@@ -151,13 +155,13 @@ namespace Console_RPG
                 }
                 else
                 {
-                    Console.WriteLine(name + " recovered 10 mana");
+                    Console.WriteLine("\n" + name + " recovered 10 mana");
                     currentMana += 10;
                 }
             }
             else if (choice == 2)
             {
-                Console.WriteLine(name + " recovered " + chaos + " HP");
+                Console.WriteLine("\n" + name + " recovered " + chaos + " HP");
                 currentHP += stats.intelligence;
                 if (currentHP > maxHP)
                 {
@@ -179,7 +183,7 @@ namespace Console_RPG
                     }
                     else
                     {
-                        Console.WriteLine(name + " recovered 10 mana");
+                        Console.WriteLine("\n" +name + " recovered 10 mana");
                         currentMana += 10;
                     }
                 }
@@ -188,7 +192,9 @@ namespace Console_RPG
             choice = random.Next(25);
             if (choice <= chaos)
             {
-                Console.WriteLine(name + " took another turn...");
+                Thread.Sleep(2000);
+                Console.WriteLine("\n" + name + " took another turn...");
+                Thread.Sleep(2000);
                 DoTurn(allies, enemies);
             }
         }

@@ -68,6 +68,7 @@ namespace Console_RPG
                 }
                 if (target.currentHP <= 0)
                 {
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine(target.name + " has been defeated!");
                 }
             }
@@ -105,6 +106,7 @@ namespace Console_RPG
                 }
                 if (target.currentHP <= 0)
                 {
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine(target.name + " has been defeated!");
                     maxHP += damage;
                 }
@@ -113,6 +115,7 @@ namespace Console_RPG
 
         public override void DoTurn(List<Entity> allies, List<Enemy> enemies)
         {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Attack(ChooseTarget(enemies.Cast<Entity>().ToList()));
             //players.Cast<Entity>().ToList();
         }

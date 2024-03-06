@@ -24,6 +24,9 @@ namespace Console_RPG
     //classes are useful for storing complex objects
     abstract class Entity
     {
+       public static List<Entity> allies = new List<Entity> { Player.player, Mount.horse};
+
+
         public String name;
         public String race;
         public int currentHP, maxHP;
@@ -59,9 +62,9 @@ namespace Console_RPG
             item.Use(this, target);
         }
 
-        public void getParty(List<Entity> allies)
+        public void getParty()
         {
-            Console.WriteLine("Your party consists of: ");
+            Console.WriteLine("\nYour party consists of: ");
             foreach (Entity i in allies)
             {
                 Console.WriteLine(i.name);
