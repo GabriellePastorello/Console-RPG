@@ -6,9 +6,9 @@ namespace Console_RPG
 {
     class Mount : Entity
     {
-        public static Mount horse = new Mount("Horse", "Horse", 150, 30, 500, new Stats(10, 7, 7, 2), 2);
-        public static Mount horse2 = new Mount("Travel Horse", "Horse", 150, 30, 500, new Stats(10, 7, 7, 2), 2);
-        public static Mount horse3 = new Mount("Mountain Horse", "Horse", 150, 30, 500, new Stats(10, 7, 7, 2), 2);
+        public static Mount horse = new Mount("Horse", "Horse", 150, 30, 500, new Stats(10, 7, 7, 2), 1);
+        public static Mount horse2 = new Mount("Travel Horse", "Horse", 150, 30, 500, new Stats(10, 7, 7, 2), 1);
+        public static Mount horse3 = new Mount("Mountain Horse", "Horse", 150, 30, 500, new Stats(10, 7, 7, 2), 1);
         public static Mount Qilin = new Mount("Qilin", "Qilin", 250, 50, 800, new Stats(15, 9, 9, 4), 1);
 
         public int curPassengers, maxPassengers;

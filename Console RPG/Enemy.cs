@@ -7,10 +7,10 @@ namespace Console_RPG
 {
     class Enemy : Entity
     {
-        public static Enemy Ebony = new Enemy("Ebony", "Dragon", 10000, 10000, 10, new Stats(15, 12, 20, 18), 1000, 10000, 1, weapon: Weapon.blackSword);
-        public static Enemy dragonScout = new Enemy("Brown Dragon", "Dragon", 500, 500, 10, new Stats(18, 9, 18, 17), 100, 1000, 2);
-        public static Enemy dragonScout2 = new Enemy("Green Dragon", "Dragon", 500, 500, 10, new Stats(18, 9, 18, 17), 100, 1000, 2);
-        public static Enemy dragonScout3 = new Enemy("Dragon Scout", "Dragon", 500, 500, 10, new Stats(18, 9, 18, 17), 100, 1000, 2);
+        public static Enemy Ebony = new Enemy("Ebony", "Dragon", 10000, 10000, 10, new Stats(12, 12, 20, 18), 1000, 10000, 1, weapon: Weapon.blackSword);
+        public static Enemy dragonScout = new Enemy("Brown Dragon", "Dragon", 500, 500, 10, new Stats(12, 9, 18, 17), 100, 1000, 2);
+        public static Enemy dragonScout2 = new Enemy("Green Dragon", "Dragon", 500, 500, 10, new Stats(12, 9, 18, 17), 100, 1000, 2);
+        public static Enemy dragonScout3 = new Enemy("Dragon Scout", "Dragon", 500, 500, 10, new Stats(12, 9, 18, 17), 100, 1000, 2);
         public static Enemy Cultist = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5, weapon: Weapon.cultistSword, armour: Armour.cultist);
         public static Enemy Cultist2 = new Enemy("Devout Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5, weapon: Weapon.cultistSword2, armour: Armour.cultist2);
         public static Enemy Cultist3 = new Enemy("Dragon Cultist", "Human", 80, 120, 10, new Stats(5, 4, 4, 6), 50, 100, 5, weapon: Weapon.cultistSword3, armour: Armour.cultist3);

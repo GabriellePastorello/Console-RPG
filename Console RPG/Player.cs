@@ -9,8 +9,8 @@ namespace Console_RPG
     {
         public static Player player = new Player("You", "Human", 80, 100, 100, new Stats(5, 5, 5, 5), weapon: Weapon.sword3, armour: Armour.leather);
         public static Player hiredBlade = new Player("Sellsword", "Human", 75, 80, 100, new Stats(4, 5, 6, 4), weapon: Weapon.sword, armour: Armour.leather2);
-        public static Player hiredBlade2 = new Player("Sell sword", "Human", 75, 80, 100, new Stats(4, 5, 6, 4), weapon: Weapon.sword2, armour: Armour.leather3);
-        public static Player adventurer = new Player("Adventurer", "Human", 65, 90, 100, new Stats(6, 4, 3, 6), weapon: Weapon.sword4, armour: Armour.adventureStuff);
+        public static Player hiredBlade2 = new Player("Sell sword", "Human", 75, 80, 100, new Stats(4, 7, 6, 4), weapon: Weapon.sword2, armour: Armour.leather3);
+        public static Player adventurer = new Player("Adventurer", "Human", 65, 90, 100, new Stats(6, 4, 3, 8), weapon: Weapon.sword4, armour: Armour.adventureStuff);
         public static Player warrior = new Player("Warrior", "Human", 100, 120, 120, new Stats(6, 6, 6, 6), weapon: Weapon.sword5, armour: Armour.steel);
 
         public int xp, level;
@@ -217,6 +217,10 @@ namespace Console_RPG
                 mount.curPassengers += 1;
                 this.stats.defence *= 2;
                 this.stats.strength *= 2;
+                if (mount.name == "Qilin")
+                {
+                    this.stats.intelligence *= 2;
+                }
                 Console.WriteLine(this.name + " has mounted " + mount.name);
             }
             
@@ -229,6 +233,10 @@ namespace Console_RPG
                 this.mount.curPassengers -= 1;
                 this.stats.defence /= 2;
                 this.stats.strength /= 2;
+                if (mount.name == "Qilin")
+                {
+                    this.stats.intelligence /= 2;
+                }
                 this.mount = null;
                 isMounted = false;
                 Console.WriteLine(this.name + " has dismounted.");
@@ -236,58 +244,6 @@ namespace Console_RPG
             else
             {
                 Console.WriteLine(name + " is not currently mounted.");
-            }
-        }
-
-        public Entity findEntity(List<Entity> entities, String entityName)
-        {
-            int listNum = -1;
-            for (int i = 0; i < entities.Count; i++)
-            {
-                if (entities[i].name == entityName)
-                {
-                    listNum = i;
-                }
-            }
-            if (listNum >= 0)
-            {
-                return entities[listNum];
-            }
-            else
-            {
-                Console.WriteLine(entityName + " couldn't be found.");
-                return null;
-            }
-        }
-
-        public void transferItem(List<Entity> entities, string transferTo, string transferFrom, string itemName)
-        {
-            Entity takeFrom = findEntity(entities, transferFrom);
-            Entity giveTo = findEntity(entities, transferTo);
-            int itemID = -1;
-            for (int i = 0; i < takeFrom.inventory.Count; i++)
-            {
-                if (takeFrom.inventory[i].name == itemName)
-                {
-                    itemID = i;
-                    i += takeFrom.inventory.Count;
-                }
-            }
-            if (itemID >= 0)
-            {
-                if (takeFrom.inventory[itemID].weight <= giveTo.carryWeight)
-                {
-                    giveTo.inventory.Remove(takeFrom.inventory[itemID]);
-                    takeFrom.inventory.Remove(takeFrom.inventory[itemID]);
-                }
-                else
-                {
-                    Console.WriteLine("Item couldn't be transfered, it was too heavy.");
-                }
-            }
-            else
-            {
-                Console.WriteLine(itemName + " couldn't be found.");
             }
         }
 

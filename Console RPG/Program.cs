@@ -43,6 +43,9 @@ namespace Console_RPG
             //Thread.Sleep(2000);
             Location.startingTown.Resolve(Entity.allies);
 
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("\nCongrats! You have defeated Ebony, the leader of the dragons of Cinder Mountain! You return back home a hero!");
+
             
         }
     }
