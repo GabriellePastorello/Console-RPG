@@ -250,8 +250,8 @@ namespace Console_RPG
                 }
                 else if (input == "Talk")
                 {
-                    List<String> dialogue = new List<string> { ": I heard there's a lot of chaos out there. Watch out for anyone who can warp time.", ": I suggest you stay away from spellcasters, they drain your vitality.", ": Keep your party small, less of a chance you'll be spotted by enemies.", ": I don't really feel like talking right now.", ": Try not to overuse those potions.", ": Hi", ": If you want to trade, come back later to see if I've got something new in stock." };
-                    Console.WriteLine("\n" + ownerName + dialogue[random.Next(6)]);
+                    List<String> dialogue = new List<string> { ": I heard there's a lot of chaos out there. Watch out for anyone who can warp time.", ": I suggest you stay away from spellcasters, they drain your vitality.", ": Keep your party small, less of a chance you'll be spotted by enemies.", ": I don't really feel like talking right now.", ": Try not to overuse those potions.", ": Hi", ": If you want to trade, come back later to see if I've got something new in stock.", ": Sometimes, it's better to take a step back.", ": Fighting on horseback is always easier." };
+                    Console.WriteLine("\n" + ownerName + dialogue[random.Next(8)]);
                 }
                 else if (input == "Leave")
                 {
