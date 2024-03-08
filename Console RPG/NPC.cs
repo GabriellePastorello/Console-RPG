@@ -31,7 +31,9 @@ namespace Console_RPG
             while (true)
             {
                 Console.WriteLine("What would you like to do?\nTalk\nRecruit\nLeave");
+                Console.ForegroundColor = ConsoleColor.White;
                 string input = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.Green;
                 if (input == "Talk")
                 {
                     Console.WriteLine("\n" + npc.name + ": " + dialogue);

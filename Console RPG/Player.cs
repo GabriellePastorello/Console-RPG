@@ -50,7 +50,9 @@ namespace Console_RPG
                     Console.WriteLine(i.name + " " + i.currentHP + "/" + i.maxHP);
                 }
             }
+            Console.ForegroundColor = ConsoleColor.White;
             theTarget = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             foreach (Entity i in targets)
             {
                 if (i.name == theTarget)
@@ -163,7 +165,9 @@ namespace Console_RPG
                 xp -= level * 10;
                 level++;
                 Console.WriteLine(name + " leveled up to level " + level + "! Choose a stat to level up.\nHP " + maxHP + " --> " + (maxHP+10) + " | Mana " + maxMana + " --> " + (maxMana+10) + " | Speed " + stats.speed + " --> " + (stats.speed+1) + " | Strength " + stats.strength + " --> " + (stats.strength+1) + " | Defence " + stats.defence + " --> " + (stats.defence+1) + " | Intelligence " + stats.speed + "-- > " + (stats.speed+1));
+                Console.ForegroundColor = ConsoleColor.White;
                 String point = Console.ReadLine();
+                Console.ForegroundColor= ConsoleColor.Gray;
                 if (point == "HP")
                 {
                     maxHP += 10;
@@ -255,7 +259,9 @@ namespace Console_RPG
             {
                 Console.WriteLine(i.name);
             }
+            Console.ForegroundColor = ConsoleColor.White;
             theTarget = Console.ReadLine();
+            Console.ForegroundColor= ConsoleColor.DarkYellow;
             foreach (Item i in items)
             {
                 if (i.name == theTarget)
@@ -276,7 +282,9 @@ namespace Console_RPG
                 }
             }
             Console.WriteLine("What would " + name + " like to do?\na.Use Item\nb.Attack\nc.Spell\nd.Skip");
+            Console.ForegroundColor = ConsoleColor.White;
             String choice = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             if (choice == "a" && !(inventory is null) && inventory.Count > 0)
             {
                 Item item = ChooseItem(inventory);

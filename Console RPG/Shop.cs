@@ -36,7 +36,9 @@ namespace Console_RPG
             while (true)
             {
                 Console.WriteLine("\nWhat would you like to do? Gold: " + Player.gold + "\nShop\nTrade\nHire\nStable\nRepair\nTalk\nLeave");
+                Console.ForegroundColor = ConsoleColor.White;
                 string input = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.Gray;
 
                 if (input == "Shop")
                 {
@@ -78,7 +80,9 @@ namespace Console_RPG
                         otherTradePrice += 1;
                         Console.WriteLine(weapons[rotation].name + ": $" + tradePrice);
                         Console.WriteLine(armours[rotation].name + ": $" + otherTradePrice);
+                        Console.ForegroundColor = ConsoleColor.White;
                         input = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         if (input == weapons[rotation].name)
                         {
                             if (Player.gold >= tradePrice && buyer.carryWeight >= (weapons[rotation].weight - buyer.weapon.weight))
@@ -90,6 +94,7 @@ namespace Console_RPG
                                 buyer.weapon = weapons[rotation];
                                 weapons.Remove(buyer.weapon);
                                 Console.WriteLine("\nWeapons traded!");
+                                rotation = weapons.Count - 1;
                             }
                             else if (Player.gold >= tradePrice)
                             {
@@ -139,14 +144,16 @@ namespace Console_RPG
                 {
                     if (!(sellsword == null))
                     {
-                        Console.WriteLine("\n" + ownerName + ": We got someone you can hire for $100.");
+                        Console.WriteLine("\n" + ownerName + ": We got someone you can hire for $250.");
                         Console.WriteLine("Hire " + sellsword.name + "?\nYes\nNo");
+                        Console.ForegroundColor = ConsoleColor.White;
                         input = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         if (input == "Yes")
                         {
-                            if (Player.gold >= 100)
+                            if (Player.gold >= 250)
                             {
-                                Player.gold -= 100;
+                                Player.gold -= 250;
                                 Entity.allies.Add(sellsword);
                                 Console.WriteLine(sellsword.name + " has been added to your party!");
                                 sellsword = null;
@@ -174,14 +181,16 @@ namespace Console_RPG
                 {
                     if (!(horse == null))
                     {
-                        Console.WriteLine("\n" + ownerName + ": We got a horse here for $100.");
+                        Console.WriteLine("\n" + ownerName + ": We got a horse here for $500.");
                         Console.WriteLine("Buy " + horse.name + "?\nYes\nNo");
+                        Console.ForegroundColor = ConsoleColor.White;
                         input = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         if (input == "Yes")
                         {
-                            if (Player.gold >= 100)
+                            if (Player.gold >= 500)
                             {
-                                Player.gold -= 100;
+                                Player.gold -= 500;
                                 Entity.allies.Add(horse);
                                 Console.WriteLine(horse.name + " has been added to your party!");
                                 horse = null;
@@ -215,7 +224,9 @@ namespace Console_RPG
                     else
                     {
                         Console.WriteLine("\n" + ownerName + ": What would you like to repair?\nArmour: $" + buyer.armour.price + "\nWeapon: $" + buyer.weapon.price);
+                        Console.ForegroundColor = ConsoleColor.White;
                         input = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         if (input == "Armour")
                         {
                             if (buyer.armour.price <= Player.gold)
@@ -278,7 +289,9 @@ namespace Console_RPG
             {
                 Console.WriteLine(i.name + ": $" + i.price);
             }
+            Console.ForegroundColor = ConsoleColor.White;
             theTarget = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
             foreach (Item i in items)
             {
                 if (i.name == theTarget)
@@ -296,9 +309,14 @@ namespace Console_RPG
             Console.WriteLine("\nWho's buying?");
             foreach (Entity i in party)
             {
-                Console.WriteLine(i.name);
+                if (i is Player)
+                {
+                    Console.WriteLine(i.name);
+                }
             }
+            Console.ForegroundColor = ConsoleColor.White;
             theTarget = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
             foreach (Entity i in party)
             {
                 if (i.name == theTarget)

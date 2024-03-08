@@ -61,7 +61,18 @@ namespace Console_RPG
                 {
                     if (entity.currentHP > 0)
                     {
-                        Thread.Sleep(2000);
+                        if (entity is Mount)
+                        {
+                            if ((entity as Mount).curPassengers == 0)
+                            {
+                                Thread.Sleep(2000);
+                            }
+                        }
+                        if (entity is Player || entity is Enemy)
+                        {
+                            Thread.Sleep(2000);
+                        }
+                        
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         if (entity is Player)
                         {

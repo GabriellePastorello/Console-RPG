@@ -25,12 +25,12 @@ namespace Console_RPG
         public static Armour cultist7 = new Armour(25, 3.5f, "Cultist Garb", "Cultists love these", 5, 50);
         public static Armour cultist8 = new Armour(25, 3.5f, "Cultist Garb", "Cultists love these", 5, 50);
 
-        public static Armour shop = new Armour(15, 15.25f, "Enhanced Leather Armour", "Better durability", 3, 65);
-        public static Armour shop2 = new Armour(25, 20.25f, "Armour or Mysterious Origin", "What is it made of?", 4, 85);
-        public static Armour shop3 = new Armour(35, 25.25f, "Armour of Mysterious Origin", "???", 4, 105);
-        public static Armour shop4 = new Armour(45, 30.25f, "Iron Armour", "Heavy", 5, 125);
-        public static Armour shop5 = new Armour(55, 35.25f, "Enhanced Iron Armour", "Heavy", 5, 145);
-        public static Armour shop6 = new Armour(65, 40.25f, "Enhacned Steel Armour", "Good durability", 6, 165);
+        public static Armour shop = new Armour(150, 15.25f, "Enhanced Leather Armour", "Better durability", 3, 65);
+        public static Armour shop2 = new Armour(250, 20.25f, "Armour or Mysterious Origin", "What is it made of?", 4, 85);
+        public static Armour shop3 = new Armour(350, 25.25f, "Armour of Mysterious Origin", "???", 4, 105);
+        public static Armour shop4 = new Armour(450, 30.25f, "Iron Armour", "Heavy", 5, 125);
+        public static Armour shop5 = new Armour(550, 35.25f, "Enhanced Iron Armour", "Heavy", 5, 145);
+        public static Armour shop6 = new Armour(650, 40.25f, "Enhacned Steel Armour", "Good durability", 6, 165);
 
         public int defence;
 

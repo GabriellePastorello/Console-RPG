@@ -108,8 +108,9 @@ namespace Console_RPG
             {
                 Console.WriteLine("To your west is " + west.name);
             }
-
+            Console.ForegroundColor = ConsoleColor.White;
             String direction = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
             Location nextLocation = null;
 
             if (direction == "north" && !(north is null))

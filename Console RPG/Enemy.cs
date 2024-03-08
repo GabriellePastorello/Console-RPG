@@ -154,6 +154,15 @@ namespace Console_RPG
                         Attack(target);
                     }
                 }
+                else if (race == "Human")
+                {
+                    Console.WriteLine("\n" + name + " does a triple attack.");
+                    Entity target = ChooseTarget(allies);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Attack(target);
+                    }
+                }
                 else
                 {
                     Attack(ChooseTarget(allies));
@@ -181,7 +190,7 @@ namespace Console_RPG
                     currentHP = maxHP;
                 }
             }
-            else if (choice == 3 && race == "dragon")
+            else if (choice == 3 && race == "Dragon")
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\n" + name + " breathes fire.");

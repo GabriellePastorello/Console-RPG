@@ -16,7 +16,9 @@ namespace Console_RPG
             while (true)
             {
                 Console.WriteLine("\nWhat would you like to do?\nView Party\nView Inventory\nMount\nDismount\nFire\nDone");
+                Console.ForegroundColor = ConsoleColor.White;
                 string input = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.Gray;
                 Entity viewing = null;
                 if (input == "View Party")
                 {
@@ -86,7 +88,9 @@ namespace Console_RPG
                     Console.WriteLine(i.name);
                 }
             }
+            Console.ForegroundColor = ConsoleColor.White;
             theTarget = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
             foreach (Entity i in party)
             {
                 if (i.name == theTarget)
@@ -101,7 +105,7 @@ namespace Console_RPG
         public Entity ChooseHorse(List<Entity> party)
         {
             String theTarget;
-            Console.WriteLine("\nWho?");
+            Console.WriteLine("\nWhich horse?");
             foreach (Entity i in party)
             {
                 if (i is Mount)
@@ -109,7 +113,9 @@ namespace Console_RPG
                     Console.WriteLine(i.name);
                 }
             }
+            Console.ForegroundColor = ConsoleColor.White;
             theTarget = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
             foreach (Entity i in party)
             {
                 if (i.name == theTarget)
