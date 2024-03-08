@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Console_RPG
 {
@@ -72,14 +73,14 @@ namespace Console_RPG
                     interaction.Resolve(allies);
                 }
             }
-            if (!(secondInteraction is null))
+            if (!(secondInteraction is null) && allies.TrueForAll(Entity => Entity.currentHP <= 0))
             {
                 if (secondInteraction.isResolved == false)
                 {
                     secondInteraction.Resolve(allies);
                 }
             }
-            if (!(finalInteraction is null))
+            if (!(finalInteraction is null) && allies.TrueForAll(Entity => Entity.currentHP <= 0))
             {
                 if (finalInteraction.isResolved == false)
                 {
