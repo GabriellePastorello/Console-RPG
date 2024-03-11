@@ -73,14 +73,14 @@ namespace Console_RPG
                     interaction.Resolve(allies);
                 }
             }
-            if (!(secondInteraction is null) && allies.TrueForAll(Entity => Entity.currentHP <= 0))
+            if (!(secondInteraction is null) && !(allies.TrueForAll(Entity => Entity.currentHP <= 0)))
             {
                 if (secondInteraction.isResolved == false)
                 {
                     secondInteraction.Resolve(allies);
                 }
             }
-            if (!(finalInteraction is null) && allies.TrueForAll(Entity => Entity.currentHP <= 0))
+            if (!(finalInteraction is null) && !(allies.TrueForAll(Entity => Entity.currentHP <= 0)))
             {
                 if (finalInteraction.isResolved == false)
                 {
